@@ -24,6 +24,64 @@ void Swap(SinhVien &a, SinhVien &b) {
     b = temp;
 }
 
+int PartitionMaxtoMinWithMSSV(SinhVien*& Arr, int low, int high)
+{
+    string pivot = Arr[high].MSSV;
+    int left = low;
+    int right = high - 1;
+    while (true) {
+        while (left <= right && Arr[left].MSSV > pivot) left++;
+        while (right >= left && Arr[right].MSSV < pivot) right--;
+        if (left >= right) break;
+        Swap(Arr[left], Arr[right]);
+        left++;
+        right--;
+    }
+    Swap(Arr[left], Arr[high]);
+    return left;
+}
+
+void QuickSortMaxtoMinWithMSSV(SinhVien*& Arr, int low, int high)
+{
+    if (low < high)
+    {
+
+        int pi = PartitionMaxtoMinWithMSSV(Arr, low, high);
+
+        QuickSortMaxtoMinWithMSSV(Arr, low, pi - 1);
+        QuickSortMaxtoMinWithMSSV(Arr, pi + 1, high);
+    }
+}
+
+int PartitionMaxtoMinWithDTB(SinhVien*& Arr, int low, int high)
+{
+    double pivot = Arr[high].DTB;
+    int left = low;
+    int right = high - 1;
+    while (true) {
+        while (left <= right && Arr[left].DTB > pivot) left++;
+        while (right >= left && Arr[right].DTB < pivot) right--;
+        if (left >= right) break;
+        Swap(Arr[left], Arr[right]);
+        left++;
+        right--;
+    }
+    Swap(Arr[left], Arr[high]);
+    return left;
+}
+
+void QuickSortMaxtoMinWithDTB(SinhVien*& Arr, int low, int high)
+{
+    if (low < high)
+    {
+
+        int pi = PartitionMaxtoMinWithDTB(Arr, low, high);
+
+        QuickSortMaxtoMinWithDTB(Arr, low, pi - 1);
+        QuickSortMaxtoMinWithDTB(Arr, pi + 1, high);
+    }
+}
+
 void HeapifyMintoMaxWithMSSV(SinhVien*& Arr, int n, int i)  {
     int Max = i;
     int left = i * 2 + 1;
@@ -176,11 +234,11 @@ void CoutData(SinhVien* Arr, int n) {
 int main()
 {
 back:
-    cout << "=================================================" << endl;
+    cout << "================================================" << endl;
     cout << "--- Chuong trinh sap xep danh sach sinh vien ---" << endl;
     cout << "   Nhap 1: Nhap danh sach tu ban phim !" << endl;
     cout << "   Nhap 2: Nhap danh sach tu file input.csv" << endl;
-    cout << "=================================================" << endl;
+    cout << "================================================" << endl;
     cout << "Nhap tuy chon: ";
     int Optional;
     cin >> Optional;
@@ -224,14 +282,16 @@ back4blood:
         break;
     }
     case 2: {
-
+        QuickSortMaxtoMinWithMSSV(Arr, 0, n-1);
+        break;
     }
     case 3: {
         HeapSortMintoMaxWithDTB(Arr, n);
         break;
     }
     case 4: {
-
+        QuickSortMaxtoMinWithDTB(Arr, 0, n-1);
+        break;
     }
     default: {
         cout << "sai tuy chon, moi nhap lai !" << endl;
